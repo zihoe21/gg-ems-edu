@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>경기도 구급대원 외부교육 신청</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #C0392B;
+    --red-dark: #96281B;
+    --red-light: #FDECEA;
+    --gray-50: #F8F8F8;
+    --gray-100: #F0F0F0;
+    --gray-200: #E0E0E0;
+    --gray-500: #9E9E9E;
+    --gray-700: #555;
+    --gray-900: #1A1A1A;
+    --white: #fff;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  body {
+    font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-900);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* 헤더 */
+  header {
+    background: var(--red);
+    color: var(--white);
+    padding: 0;
+  }
+  .header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .header-emblem {
+    width: 48px;
+    height: 48px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 22px;
+  }
+  .header-text h1 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .header-text p {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-top: 2px;
+  }
+  .header-strip {
+    background: var(--red-dark);
+    padding: 6px 0;
+    text-align: center;
+    font-size: 11px;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.5px;
+  }
+
+  /* 메인 */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 4rem;
+  }
+
+  /* 공지 배너 */
+  .notice-banner {
+    background: var(--red-light);
+    border-left: 3px solid var(--red);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: .75rem 1rem;
+    font-size: 13px;
+    color: var(--red-dark);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* 섹션 헤더 */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: .5rem;
+  }
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 1rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  /* 교육 카드 */
+  .edu-grid {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 2.5rem;
+  }
+  .edu-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color .15s, transform .15s;
+  }
+  .edu-card:hover { border-color: var(--red); transform: translateY(-1px); }
+
+  .edu-card-head {
+    padding: 1rem 1.25rem .75rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .edu-card-head h3 {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .status {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .status-open   { background: #E8F5E9; color: #2E7D32; }
+  .status-soon   { background: #FFF8E1; color: #E65100; }
+  .status-closed { background: var(--gray-100); color: var(--gray-500); }
+
+  .edu-card-meta {
+    padding: 0 1.25rem .75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 12px;
+    color: var(--gray-700);
+  }
+  .edu-card-meta span { display: flex; align-items: center; gap: 4px; }
+
+  .edu-card-body {
+    padding: .6rem 1.25rem .75rem;
+    font-size: 12px;
+    color: var(--gray-700);
+    background: var(--gray-50);
+    border-top: 1px solid var(--gray-100);
+    line-height: 1.7;
+  }
+  .schedule-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .schedule-list li {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    padding: 2px 10px;
+    font-size: 12px;
+  }
+
+  .edu-card-foot {
+    padding: .75rem 1.25rem;
+    border-top: 1px solid var(--gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .deadline {
+    font-size: 12px;
+    color: var(--gray-700);
+  }
+  .deadline strong { color: var(--gray-900); }
+
+  .btn-apply {
+    display: inline-block;
+    padding: 8px 20px;
+    background: var(--red);
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: background .15s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-apply:hover { background: var(--red-dark); }
+  .btn-apply.disabled {
+    background: var(--gray-200);
+    color: var(--gray-500);
+    cursor: default;
+    pointer-events: none;
+  }
+
+  /* 안내 섹션 */
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 2.5rem;
+  }
+  .guide-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+  }
+  .guide-num {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .guide-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .guide-card p  { font-size: 12px; color: var(--gray-700); line-height: 1.6; }
+
+  /* 유의사항 */
+  .caution-box {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+  .caution-box ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .caution-box li {
+    font-size: 12px;
+    color: var(--gray-700);
+    display: flex;
+    gap: 6px;
+    line-height: 1.6;
+  }
+  .caution-box li::before {
+    content: '·';
+    color: var(--red);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* 푸터 */
+  footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    font-size: 11px;
+    color: var(--gray-500);
+    border-top: 1px solid var(--gray-200);
+  }
+
+  /* 반응형 */
+  @media (max-width: 520px) {
+    .header-inner { padding: 1.25rem 1rem; }
+    main { padding: 1rem 1rem 3rem; }
+    .edu-card-foot { flex-direction: column; align-items: flex-start; }
+    .btn-apply { width: 100%; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-emblem">🚑</div>
+    <div class="header-text">
+      <h1>경기도 구급대원 외부교육 신청</h1>
+      <p>경기도소방재난본부 구급교육팀</p>
+    </div>
+  </div>
+  <div class="header-strip">신청 전 반드시 소속 팀장의 사전 승인을 받으시기 바랍니다</div>
+</header>
+
+<main>
+
+  <!-- 공지 -->
+  <div class="notice-banner">
+    ⚠️ 신청은 마감일 자정까지만 가능합니다. 마감 후에는 신청이 반영되지 않습니다.
+  </div>
+
+  <!-- 교육 공고 -->
+  <p class="section-label">교육 공고</p>
+  <p class="section-title">현재 신청 가능한 외부교육</p>
+
+  <div class="edu-grid">
+
+    <!-- 카드 1 -->
+    <div class="edu-card">
+      <div class="edu-card-head">
+        <h3>심폐소생술 전문과정</h3>
+        <span class="status status-open">신청 중</span>
+      </div>
+      <div class="edu-card-meta">
+        <span>🏫 중앙소방학교 (충남 천안)</span>
+        <span>👥 정원 30명</span>
+        <span>🏠 숙식 제공</span>
+      </div>
+      <div class="edu-card-body">
+        <strong>교육 일정</strong>
+        <ul class="schedule-list">
+          <li>2025.09.01 ~ 09.05 (1기)</li>
+          <li>2025.09.15 ~ 09.19 (2기)</li>
+        </ul>
+      </div>
+      <div class="edu-card-foot">
+        <span class="deadline">신청 마감 <strong>2025.08.10</strong></span>
+        <a class="btn-apply" href="https://naver.me/56X97ZDY" target="_blank" rel="noopener">신청하기 →</a>
+      </div>
+    </div>
+
+    <!-- 카드 2 -->
+    <div class="edu-card">
+      <div class="edu-card-head">
+        <h3>응급환자 중증도 분류 과정</h3>
+        <span class="status status-soon">마감 임박</span>
+      </div>
+      <div class="edu-card-meta">
+        <span>🏫 경기도소방학교 (경기 용인)</span>
+        <span>👥 정원 20명</span>
+        <span>🚌 출퇴근 과정</span>
+      </div>
+      <div class="edu-card-body">
+        <strong>교육 일정</strong>
+        <ul class="schedule-list">
+          <li>2025.08.11 ~ 08.13 (단일기)</li>
+        </ul>
+      </div>
+      <div class="edu-card-foot">
+        <span class="deadline">신청 마감 <strong>2025.07.25</strong></span>
+        <a class="btn-apply" href="https://naver.me/56X97ZDY" target="_blank" rel="noopener">신청하기 →</a>
+      </div>
+    </div>
+
+    <!-- 카드 3 -->
+    <div class="edu-card">
+      <div class="edu-card-head">
+        <h3>항공구조구급 실무 교육</h3>
+        <span class="status status-closed">마감</span>
+      </div>
+      <div class="edu-card-meta">
+        <span>🏫 소방청 항공대 (경기 이천)</span>
+        <span>👥 정원 15명</span>
+        <span>🏠 숙식 제공</span>
+      </div>
+      <div class="edu-card-body">
+        <strong>교육 일정</strong>
+        <ul class="schedule-list">
+          <li>2025.07.14 ~ 07.18</li>
+        </ul>
+      </div>
+      <div class="edu-card-foot">
+        <span class="deadline">신청 마감 <strong>2025.06.30</strong></span>
+        <button class="btn-apply disabled">신청 마감</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 신청 방법 -->
+  <p class="section-label">신청 방법</p>
+  <p class="section-title">이렇게 신청하세요</p>
+
+  <div class="guide-grid">
+    <div class="guide-card">
+      <div class="guide-num">1</div>
+      <h4>공고 확인</h4>
+      <p>위 교육 목록에서 희망 교육과 일정을 확인합니다.</p>
+    </div>
+    <div class="guide-card">
+      <div class="guide-num">2</div>
+      <h4>사전 승인</h4>
+      <p>소속 팀장에게 교육 참석 가능 여부를 사전에 확인합니다.</p>
+    </div>
+    <div class="guide-card">
+      <div class="guide-num">3</div>
+      <h4>온라인 신청</h4>
+      <p>신청하기 버튼을 눌러 이름·계급·소속·희망일정을 입력합니다.</p>
+    </div>
+    <div class="guide-card">
+      <div class="guide-num">4</div>
+      <h4>결과 통보</h4>
+      <p>마감 후 선발 결과를 소속 소방서를 통해 개별 통보합니다.</p>
+    </div>
+  </div>
+
+  <!-- 유의사항 -->
+  <p class="section-label">유의사항</p>
+  <p class="section-title">꼭 확인하세요</p>
+
+  <div class="caution-box">
+    <ul>
+      <li>신청은 1인 1개 교육만 가능합니다. 중복 신청 시 임의로 1개만 처리됩니다.</li>
+      <li>정원 초과 시 선발 기준(경력, 희망 순위 등)에 따라 조정될 수 있습니다.</li>
+      <li>선발 후 취소 시 반드시 구급교육팀에 사전 연락 바랍니다.</li>
+      <li>교육 중 개인 귀책 사유로 인한 중도 포기는 향후 교육 신청이 제한될 수 있습니다.</li>
+      <li>문의: 경기도소방재난본부 구급교육팀 (내선 문의)</li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  경기도소방재난본부 구급교육팀 · 이 페이지는 내부 교육 신청 안내 목적으로만 운영됩니다
+</footer>
+
+</body>
+</html>
