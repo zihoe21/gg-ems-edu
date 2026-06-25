@@ -6,286 +6,128 @@
 <title>경기도 구급대원 외부교육 신청</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --red: #C0392B;
-    --red-dark: #96281B;
-    --red-light: #FDECEA;
-    --gray-50: #F8F8F8;
-    --gray-100: #F0F0F0;
-    --gray-200: #E0E0E0;
-    --gray-500: #9E9E9E;
-    --gray-700: #555;
-    --gray-900: #1A1A1A;
-    --white: #fff;
-    --radius: 10px;
-    --radius-sm: 6px;
+    --red: #C0392B; --red-dark: #96281B; --red-light: #FDECEA;
+    --gray-50: #F8F8F8; --gray-100: #F0F0F0; --gray-200: #E0E0E0;
+    --gray-500: #9E9E9E; --gray-700: #555; --gray-900: #1A1A1A;
+    --white: #fff; --radius: 10px; --radius-sm: 6px;
   }
-
-  body {
-    font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-    background: var(--gray-50);
-    color: var(--gray-900);
-    line-height: 1.6;
-    min-height: 100vh;
-  }
+  body { font-family: 'Apple SD Gothic Neo','Malgun Gothic',sans-serif; background: var(--gray-50); color: var(--gray-900); line-height: 1.6; min-height: 100vh; }
 
   /* 헤더 */
-  header {
-    background: var(--red);
-    color: var(--white);
-    padding: 0;
-  }
-  .header-inner {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 1.5rem 1.5rem 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  .header-emblem {
-    width: 48px;
-    height: 48px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    font-size: 22px;
-  }
-  .header-text h1 {
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-  }
-  .header-text p {
-    font-size: 12px;
-    opacity: 0.8;
-    margin-top: 2px;
-  }
-  .header-strip {
-    background: var(--red-dark);
-    padding: 6px 0;
-    text-align: center;
-    font-size: 11px;
-    color: rgba(255,255,255,0.75);
-    letter-spacing: 0.5px;
-  }
+  header { background: var(--red); color: var(--white); }
+  .header-inner { max-width: 860px; margin: 0 auto; padding: 1.5rem 1.5rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .header-left { display: flex; align-items: center; gap: 1rem; }
+  .header-emblem { width: 48px; height: 48px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 22px; }
+  .header-text h1 { font-size: 18px; font-weight: 700; }
+  .header-text p { font-size: 12px; opacity: 0.8; margin-top: 2px; }
+  .header-strip { background: var(--red-dark); padding: 6px 0; text-align: center; font-size: 11px; color: rgba(255,255,255,0.75); }
+
+  /* 관리자 토글 버튼 */
+  .admin-toggle-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 12px; padding: 6px 14px; border-radius: 20px; cursor: pointer; white-space: nowrap; transition: background .15s; }
+  .admin-toggle-btn:hover { background: rgba(255,255,255,0.25); }
+  .admin-toggle-btn.active { background: #fff; color: var(--red); font-weight: 700; }
+
+  /* 관리자 비밀번호 모달 */
+  .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; align-items: center; justify-content: center; }
+  .modal-bg.open { display: flex; }
+  .modal { background: #fff; border-radius: var(--radius); padding: 1.75rem; width: 100%; max-width: 340px; }
+  .modal h2 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .modal p { font-size: 12px; color: var(--gray-700); margin-bottom: 1rem; }
+  .modal input { width: 100%; padding: 10px 12px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 14px; margin-bottom: 8px; }
+  .modal input:focus { outline: none; border-color: var(--red); }
+  .modal-err { font-size: 12px; color: var(--red); margin-bottom: 8px; min-height: 16px; }
+  .modal-actions { display: flex; gap: 8px; }
+  .btn { padding: 9px 18px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 700; cursor: pointer; border: none; transition: background .15s; }
+  .btn-primary { background: var(--red); color: #fff; flex: 1; }
+  .btn-primary:hover { background: var(--red-dark); }
+  .btn-secondary { background: var(--gray-100); color: var(--gray-700); }
+  .btn-secondary:hover { background: var(--gray-200); }
+
+  /* 관리자 배너 */
+  .admin-banner { background: #FFF8E1; border-left: 3px solid #F59E0B; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: .75rem 1rem; font-size: 13px; color: #92400E; margin-bottom: 1.25rem; display: none; align-items: center; justify-content: space-between; gap: 10px; }
+  .admin-banner.show { display: flex; }
+  .admin-banner span { display: flex; align-items: center; gap: 6px; }
 
   /* 메인 */
-  main {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 1.5rem 1.5rem 4rem;
-  }
+  main { max-width: 860px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+  .notice-banner { background: var(--red-light); border-left: 3px solid var(--red); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: .75rem 1rem; font-size: 13px; color: var(--red-dark); margin-bottom: 1.5rem; }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--red); text-transform: uppercase; margin-bottom: .5rem; }
+  .section-title { font-size: 15px; font-weight: 700; margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; }
 
-  /* 공지 배너 */
-  .notice-banner {
-    background: var(--red-light);
-    border-left: 3px solid var(--red);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    padding: .75rem 1rem;
-    font-size: 13px;
-    color: var(--red-dark);
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  /* 섹션 헤더 */
-  .section-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--red);
-    text-transform: uppercase;
-    margin-bottom: .5rem;
-  }
-  .section-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--gray-900);
-    margin-bottom: 1rem;
-    padding-bottom: .5rem;
-    border-bottom: 1px solid var(--gray-200);
-  }
+  /* 공고 추가 버튼 */
+  .btn-add { background: var(--red); color: #fff; border: none; padding: 6px 14px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 700; cursor: pointer; display: none; }
+  .btn-add:hover { background: var(--red-dark); }
+  .admin-mode .btn-add { display: inline-block; }
 
   /* 교육 카드 */
-  .edu-grid {
-    display: grid;
-    gap: 12px;
-    margin-bottom: 2.5rem;
-  }
-  .edu-card {
-    background: var(--white);
-    border: 1px solid var(--gray-200);
-    border-radius: var(--radius);
-    overflow: hidden;
-    transition: border-color .15s, transform .15s;
-  }
-  .edu-card:hover { border-color: var(--red); transform: translateY(-1px); }
-
-  .edu-card-head {
-    padding: 1rem 1.25rem .75rem;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 10px;
-  }
-  .edu-card-head h3 {
-    font-size: 15px;
-    font-weight: 700;
-    line-height: 1.4;
-  }
-  .status {
-    font-size: 11px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 20px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
+  .edu-grid { display: grid; gap: 12px; margin-bottom: 2.5rem; }
+  .edu-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; transition: border-color .15s, transform .15s; }
+  .edu-card:hover { border-color: #bbb; }
+  .edu-card-head { padding: 1rem 1.25rem .75rem; display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .edu-card-head h3 { font-size: 15px; font-weight: 700; line-height: 1.4; }
+  .card-head-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .status { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
   .status-open   { background: #E8F5E9; color: #2E7D32; }
   .status-soon   { background: #FFF8E1; color: #E65100; }
   .status-closed { background: var(--gray-100); color: var(--gray-500); }
 
-  .edu-card-meta {
-    padding: 0 1.25rem .75rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-    font-size: 12px;
-    color: var(--gray-700);
-  }
+  /* 관리자 카드 액션 */
+  .card-admin-actions { display: none; gap: 4px; }
+  .admin-mode .card-admin-actions { display: flex; }
+  .btn-icon { background: var(--gray-100); border: none; border-radius: var(--radius-sm); padding: 4px 8px; font-size: 11px; cursor: pointer; color: var(--gray-700); transition: background .15s; }
+  .btn-icon:hover { background: var(--gray-200); }
+  .btn-icon.del { color: var(--red); }
+  .btn-icon.del:hover { background: var(--red-light); }
+
+  .edu-card-meta { padding: 0 1.25rem .75rem; display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--gray-700); }
   .edu-card-meta span { display: flex; align-items: center; gap: 4px; }
-
-  .edu-card-body {
-    padding: .6rem 1.25rem .75rem;
-    font-size: 12px;
-    color: var(--gray-700);
-    background: var(--gray-50);
-    border-top: 1px solid var(--gray-100);
-    line-height: 1.7;
-  }
-  .schedule-list {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 6px;
-  }
-  .schedule-list li {
-    background: var(--white);
-    border: 1px solid var(--gray-200);
-    border-radius: var(--radius-sm);
-    padding: 2px 10px;
-    font-size: 12px;
-  }
-
-  .edu-card-foot {
-    padding: .75rem 1.25rem;
-    border-top: 1px solid var(--gray-100);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-  }
-  .deadline {
-    font-size: 12px;
-    color: var(--gray-700);
-  }
+  .edu-card-body { padding: .6rem 1.25rem .75rem; font-size: 12px; color: var(--gray-700); background: var(--gray-50); border-top: 1px solid var(--gray-100); line-height: 1.7; }
+  .schedule-list { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .schedule-list li { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 2px 10px; font-size: 12px; }
+  .edu-card-foot { padding: .75rem 1.25rem; border-top: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .deadline { font-size: 12px; color: var(--gray-700); }
   .deadline strong { color: var(--gray-900); }
-
-  .btn-apply {
-    display: inline-block;
-    padding: 8px 20px;
-    background: var(--red);
-    color: var(--white);
-    font-size: 13px;
-    font-weight: 700;
-    border-radius: var(--radius-sm);
-    text-decoration: none;
-    transition: background .15s;
-    border: none;
-    cursor: pointer;
-  }
+  .btn-apply { display: inline-block; padding: 8px 20px; background: var(--red); color: var(--white); font-size: 13px; font-weight: 700; border-radius: var(--radius-sm); text-decoration: none; transition: background .15s; border: none; cursor: pointer; }
   .btn-apply:hover { background: var(--red-dark); }
-  .btn-apply.disabled {
-    background: var(--gray-200);
-    color: var(--gray-500);
-    cursor: default;
-    pointer-events: none;
-  }
+  .btn-apply.disabled { background: var(--gray-200); color: var(--gray-500); cursor: default; pointer-events: none; }
+
+  /* 공고 편집 모달 */
+  .edit-modal { background: #fff; border-radius: var(--radius); padding: 1.5rem; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; }
+  .edit-modal h2 { font-size: 16px; font-weight: 700; margin-bottom: 1.25rem; }
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 12px; color: var(--gray-700); margin-bottom: 4px; font-weight: 600; }
+  .field input, .field select, .field textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 13px; font-family: inherit; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--red); }
+  .field textarea { resize: vertical; line-height: 1.6; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
   /* 안내 섹션 */
-  .guide-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 10px;
-    margin-bottom: 2.5rem;
-  }
-  .guide-card {
-    background: var(--white);
-    border: 1px solid var(--gray-200);
-    border-radius: var(--radius);
-    padding: 1rem 1.25rem;
-  }
-  .guide-num {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--red);
-    line-height: 1;
-    margin-bottom: 6px;
-  }
+  .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 2.5rem; }
+  .guide-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1rem 1.25rem; }
+  .guide-num { font-size: 22px; font-weight: 800; color: var(--red); line-height: 1; margin-bottom: 6px; }
   .guide-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
-  .guide-card p  { font-size: 12px; color: var(--gray-700); line-height: 1.6; }
+  .guide-card p { font-size: 12px; color: var(--gray-700); line-height: 1.6; }
 
   /* 유의사항 */
-  .caution-box {
-    background: var(--white);
-    border: 1px solid var(--gray-200);
-    border-radius: var(--radius);
-    padding: 1rem 1.25rem;
-    margin-bottom: 2.5rem;
-  }
-  .caution-box ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .caution-box li {
-    font-size: 12px;
-    color: var(--gray-700);
-    display: flex;
-    gap: 6px;
-    line-height: 1.6;
-  }
-  .caution-box li::before {
-    content: '·';
-    color: var(--red);
-    font-weight: 700;
-    flex-shrink: 0;
-  }
+  .caution-box { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 2.5rem; }
+  .caution-box ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .caution-box li { font-size: 12px; color: var(--gray-700); display: flex; gap: 6px; line-height: 1.6; }
+  .caution-box li::before { content: '·'; color: var(--red); font-weight: 700; flex-shrink: 0; }
 
   /* 푸터 */
-  footer {
-    text-align: center;
-    padding: 2rem 1rem;
-    font-size: 11px;
-    color: var(--gray-500);
-    border-top: 1px solid var(--gray-200);
-  }
+  footer { text-align: center; padding: 2rem 1rem; font-size: 11px; color: var(--gray-500); border-top: 1px solid var(--gray-200); }
 
-  /* 반응형 */
+  /* 토스트 */
+  .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: #1A1A1A; color: #fff; padding: .6rem 1.25rem; border-radius: 20px; font-size: 13px; z-index: 300; opacity: 0; transition: opacity .3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
   @media (max-width: 520px) {
     .header-inner { padding: 1.25rem 1rem; }
     main { padding: 1rem 1rem 3rem; }
     .edu-card-foot { flex-direction: column; align-items: flex-start; }
     .btn-apply { width: 100%; text-align: center; }
+    .field-row { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -293,146 +135,317 @@
 
 <header>
   <div class="header-inner">
-    <div class="header-emblem">🚑</div>
-    <div class="header-text">
-      <h1>경기도 구급대원 외부교육 신청</h1>
-      <p>경기도소방재난본부 구급교육팀</p>
+    <div class="header-left">
+      <div class="header-emblem">🚑</div>
+      <div class="header-text">
+        <h1>경기도 구급대원 외부교육 신청</h1>
+        <p>경기도소방재난본부 구급품질팀</p>
+      </div>
     </div>
+    <button class="admin-toggle-btn" id="adminToggleBtn" onclick="handleAdminToggle()">관리자</button>
   </div>
-  <div class="header-strip">신청 전 반드시 소속 팀장의 사전 승인을 받으시기 바랍니다</div>
+  <div class="header-strip">경기도소방재난본부 구급품질팀 외부교육 신청 페이지</div>
 </header>
 
 <main>
-
-  <!-- 공지 -->
-  <div class="notice-banner">
-    ⚠️ 신청은 마감일 자정까지만 가능합니다. 마감 후에는 신청이 반영되지 않습니다.
+  <div class="admin-banner" id="adminBanner">
+    <span>🔧 관리자 모드 — 공고를 추가·수정·삭제할 수 있습니다</span>
+    <button class="btn btn-secondary" style="font-size:12px;padding:5px 12px" onclick="exitAdmin()">나가기</button>
   </div>
 
-  <!-- 교육 공고 -->
+  <div class="notice-banner">⚠️ 신청은 마감일 자정까지만 가능합니다. 마감 후에는 신청이 반영되지 않습니다.</div>
+
   <p class="section-label">교육 공고</p>
-  <p class="section-title">현재 신청 가능한 외부교육</p>
-
-  <div class="edu-grid">
-
-    <!-- 카드 1 -->
-    <div class="edu-card">
-      <div class="edu-card-head">
-        <h3>심폐소생술 전문과정</h3>
-        <span class="status status-open">신청 중</span>
-      </div>
-      <div class="edu-card-meta">
-        <span>🏫 중앙소방학교 (충남 천안)</span>
-        <span>👥 정원 30명</span>
-        <span>🏠 숙식 제공</span>
-      </div>
-      <div class="edu-card-body">
-        <strong>교육 일정</strong>
-        <ul class="schedule-list">
-          <li>2025.09.01 ~ 09.05 (1기)</li>
-          <li>2025.09.15 ~ 09.19 (2기)</li>
-        </ul>
-      </div>
-      <div class="edu-card-foot">
-        <span class="deadline">신청 마감 <strong>2025.08.10</strong></span>
-        <a class="btn-apply" href="https://naver.me/56X97ZDY" target="_blank" rel="noopener">신청하기 →</a>
-      </div>
-    </div>
-
-    <!-- 카드 2 -->
-    <div class="edu-card">
-      <div class="edu-card-head">
-        <h3>응급환자 중증도 분류 과정</h3>
-        <span class="status status-soon">마감 임박</span>
-      </div>
-      <div class="edu-card-meta">
-        <span>🏫 경기도소방학교 (경기 용인)</span>
-        <span>👥 정원 20명</span>
-        <span>🚌 출퇴근 과정</span>
-      </div>
-      <div class="edu-card-body">
-        <strong>교육 일정</strong>
-        <ul class="schedule-list">
-          <li>2025.08.11 ~ 08.13 (단일기)</li>
-        </ul>
-      </div>
-      <div class="edu-card-foot">
-        <span class="deadline">신청 마감 <strong>2025.07.25</strong></span>
-        <a class="btn-apply" href="https://naver.me/56X97ZDY" target="_blank" rel="noopener">신청하기 →</a>
-      </div>
-    </div>
-
-    <!-- 카드 3 -->
-    <div class="edu-card">
-      <div class="edu-card-head">
-        <h3>항공구조구급 실무 교육</h3>
-        <span class="status status-closed">마감</span>
-      </div>
-      <div class="edu-card-meta">
-        <span>🏫 소방청 항공대 (경기 이천)</span>
-        <span>👥 정원 15명</span>
-        <span>🏠 숙식 제공</span>
-      </div>
-      <div class="edu-card-body">
-        <strong>교육 일정</strong>
-        <ul class="schedule-list">
-          <li>2025.07.14 ~ 07.18</li>
-        </ul>
-      </div>
-      <div class="edu-card-foot">
-        <span class="deadline">신청 마감 <strong>2025.06.30</strong></span>
-        <button class="btn-apply disabled">신청 마감</button>
-      </div>
-    </div>
-
+  <div class="section-title">
+    현재 신청 가능한 외부교육
+    <button class="btn-add" onclick="openEditModal(null)">+ 공고 추가</button>
   </div>
 
-  <!-- 신청 방법 -->
+  <div class="edu-grid" id="eduGrid"></div>
+
   <p class="section-label">신청 방법</p>
   <p class="section-title">이렇게 신청하세요</p>
-
   <div class="guide-grid">
-    <div class="guide-card">
-      <div class="guide-num">1</div>
-      <h4>공고 확인</h4>
-      <p>위 교육 목록에서 희망 교육과 일정을 확인합니다.</p>
-    </div>
-    <div class="guide-card">
-      <div class="guide-num">2</div>
-      <h4>사전 승인</h4>
-      <p>소속 팀장에게 교육 참석 가능 여부를 사전에 확인합니다.</p>
-    </div>
-    <div class="guide-card">
-      <div class="guide-num">3</div>
-      <h4>온라인 신청</h4>
-      <p>신청하기 버튼을 눌러 이름·계급·소속·희망일정을 입력합니다.</p>
-    </div>
-    <div class="guide-card">
-      <div class="guide-num">4</div>
-      <h4>결과 통보</h4>
-      <p>마감 후 선발 결과를 소속 소방서를 통해 개별 통보합니다.</p>
-    </div>
+    <div class="guide-card"><div class="guide-num">1</div><h4>공고 확인</h4><p>위 교육 목록에서 희망 교육과 일정을 확인합니다.</p></div>
+    
+    <div class="guide-card"><div class="guide-num">2</div><h4>온라인 신청</h4><p>신청하기 버튼을 눌러 이름·계급·소속·희망일정을 입력합니다.</p></div>
+    <div class="guide-card"><div class="guide-num">3</div><h4>결과 통보</h4><p>마감 후 선발 결과를 소속 소방서를 통해 개별 통보합니다.</p></div>
   </div>
 
-  <!-- 유의사항 -->
   <p class="section-label">유의사항</p>
   <p class="section-title">꼭 확인하세요</p>
-
   <div class="caution-box">
     <ul>
-      <li>신청은 1인 1개 교육만 가능합니다. 중복 신청 시 임의로 1개만 처리됩니다.</li>
-      <li>정원 초과 시 선발 기준(경력, 희망 순위 등)에 따라 조정될 수 있습니다.</li>
-      <li>선발 후 취소 시 반드시 구급교육팀에 사전 연락 바랍니다.</li>
-      <li>교육 중 개인 귀책 사유로 인한 중도 포기는 향후 교육 신청이 제한될 수 있습니다.</li>
-      <li>문의: 경기도소방재난본부 구급교육팀 (내선 문의)</li>
+      <li>신청 후 취소 시 반드시 구급품질팀에 사전 연락 바랍니다.</li>
+      <li>정원 초과 시 선발 기준(관서별, 계급별, 선착순 등)에 따라 조정될 수 있습니다.</li>
+      <li>교육 참석 불가 시 반드시 대리인 지정 및 사전 연락 바랍니다.</li>
+      <li>무통보 미참석 관서는 향후 교육 선발 시 패널티가 부여됩니다.</li>
+      <li>문의: 경기도소방재난본부 구급품질팀</li>
     </ul>
   </div>
-
 </main>
 
-<footer>
-  경기도소방재난본부 구급교육팀 · 이 페이지는 내부 교육 신청 안내 목적으로만 운영됩니다
-</footer>
+<footer>경기도소방재난본부 구급품질팀 · 이 페이지는 교육 신청 안내 목적으로만 운영됩니다</footer>
 
+<!-- 비밀번호 모달 -->
+<div class="modal-bg" id="pwModal">
+  <div class="modal">
+    <h2>🔐 관리자 로그인</h2>
+    <p>관리자 비밀번호를 입력하세요</p>
+    <input type="password" id="pwInput" placeholder="비밀번호" onkeydown="if(event.key==='Enter')checkPw()">
+    <div class="modal-err" id="pwErr"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closePwModal()">취소</button>
+      <button class="btn btn-primary" onclick="checkPw()">확인</button>
+    </div>
+  </div>
+</div>
+
+<!-- 공고 편집 모달 -->
+<div class="modal-bg" id="editModal">
+  <div class="edit-modal">
+    <h2 id="editModalTitle">공고 추가</h2>
+    <div class="field">
+      <label>교육명</label>
+      <input id="e-title" placeholder="예: 심폐소생술 전문과정">
+    </div>
+    <div class="field">
+      <label>교육 기관 / 장소</label>
+      <input id="e-org" placeholder="예: 중앙소방학교 (충남 천안)">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>정원</label>
+        <input id="e-capacity" placeholder="예: 30명">
+      </div>
+      <div class="field">
+        <label>숙식 여부</label>
+        <select id="e-lodging">
+          <option value="숙식 제공">숙식 제공</option>
+          <option value="출퇴근 과정">출퇴근 과정</option>
+          <option value="">해당 없음</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>교육 일정 (줄바꿈으로 여러 기수 입력)</label>
+      <textarea id="e-dates" rows="3" placeholder="2025.09.01 ~ 09.05 (1기)&#10;2025.09.15 ~ 09.19 (2기)"></textarea>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>신청 마감일</label>
+        <input id="e-deadline" type="date">
+      </div>
+      <div class="field">
+        <label>신청 상태</label>
+        <select id="e-status">
+          <option value="open">신청 중</option>
+          <option value="soon">마감 임박</option>
+          <option value="closed">마감</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>신청 링크</label>
+      <input id="e-link" placeholder="https://naver.me/..." value="https://naver.me/56X97ZDY">
+    </div>
+    <div class="modal-actions" style="margin-top:1.25rem">
+      <button class="btn btn-secondary" onclick="closeEditModal()">취소</button>
+      <button class="btn btn-primary" onclick="saveEdu()">저장</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ADMIN_PW = '0000'; // ← 비밀번호 여기서 변경
+const APPLY_LINK = 'https://naver.me/56X97ZDY';
+
+let isAdmin = false;
+let editingId = null;
+
+let eduList = JSON.parse(localStorage.getItem('eduList') || 'null') || [
+  { id: 1, title: '심폐소생술 전문과정', org: '중앙소방학교 (충남 천안)', capacity: '30명', lodging: '숙식 제공', dates: ['2025.09.01 ~ 09.05 (1기)', '2025.09.15 ~ 09.19 (2기)'], deadline: '2025-08-10', status: 'open', link: APPLY_LINK },
+  { id: 2, title: '응급환자 중증도 분류 과정', org: '경기도소방학교 (경기 용인)', capacity: '20명', lodging: '출퇴근 과정', dates: ['2025.08.11 ~ 08.13 (단일기)'], deadline: '2025-07-25', status: 'soon', link: APPLY_LINK },
+  { id: 3, title: '항공구조구급 실무 교육', org: '소방청 항공대 (경기 이천)', capacity: '15명', lodging: '숙식 제공', dates: ['2025.07.14 ~ 07.18'], deadline: '2025-06-30', status: 'closed', link: APPLY_LINK },
+];
+
+function save() { localStorage.setItem('eduList', JSON.stringify(eduList)); }
+
+function statusLabel(s) {
+  if (s === 'open') return '<span class="status status-open">신청 중</span>';
+  if (s === 'soon') return '<span class="status status-soon">마감 임박</span>';
+  return '<span class="status status-closed">마감</span>';
+}
+
+function fmtDeadline(d) {
+  if (!d) return '';
+  return d.replace(/-/g, '.');
+}
+
+function renderCards() {
+  const grid = document.getElementById('eduGrid');
+  if (!eduList.length) {
+    grid.innerHTML = '<div style="text-align:center;padding:2.5rem;color:var(--gray-500);font-size:13px">등록된 교육 공고가 없습니다.</div>';
+    return;
+  }
+  grid.innerHTML = eduList.map(e => `
+    <div class="edu-card">
+      <div class="edu-card-head">
+        <h3>${e.title}</h3>
+        <div class="card-head-right">
+          <div class="card-admin-actions">
+            <button class="btn-icon" onclick="openEditModal(${e.id})">✏️ 수정</button>
+            <button class="btn-icon del" onclick="deleteEdu(${e.id})">🗑 삭제</button>
+          </div>
+          ${statusLabel(e.status)}
+        </div>
+      </div>
+      <div class="edu-card-meta">
+        <span>🏫 ${e.org}</span>
+        ${e.capacity ? `<span>👥 ${e.capacity}</span>` : ''}
+        ${e.lodging ? `<span>${e.lodging === '숙식 제공' ? '🏠' : '🚌'} ${e.lodging}</span>` : ''}
+      </div>
+      <div class="edu-card-body">
+        <strong>교육 일정</strong>
+        <ul class="schedule-list">
+          ${e.dates.map(d => `<li>${d}</li>`).join('')}
+        </ul>
+      </div>
+      <div class="edu-card-foot">
+        <span class="deadline">신청 마감 <strong>${fmtDeadline(e.deadline)}</strong></span>
+        ${e.status !== 'closed'
+          ? `<a class="btn-apply" href="${e.link}" target="_blank" rel="noopener">신청하기 →</a>`
+          : `<button class="btn-apply disabled">신청 마감</button>`}
+      </div>
+    </div>
+  `).join('');
+}
+
+// 관리자 토글
+function handleAdminToggle() {
+  if (isAdmin) { exitAdmin(); return; }
+  document.getElementById('pwModal').classList.add('open');
+  setTimeout(() => document.getElementById('pwInput').focus(), 100);
+}
+
+function checkPw() {
+  const v = document.getElementById('pwInput').value;
+  if (v === ADMIN_PW) {
+    closePwModal();
+    enterAdmin();
+  } else {
+    document.getElementById('pwErr').textContent = '비밀번호가 틀렸습니다.';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
+  }
+}
+
+function closePwModal() {
+  document.getElementById('pwModal').classList.remove('open');
+  document.getElementById('pwInput').value = '';
+  document.getElementById('pwErr').textContent = '';
+}
+
+function enterAdmin() {
+  isAdmin = true;
+  document.body.classList.add('admin-mode');
+  document.getElementById('adminToggleBtn').classList.add('active');
+  document.getElementById('adminToggleBtn').textContent = '관리자 모드 ON';
+  document.getElementById('adminBanner').classList.add('show');
+  showToast('관리자 모드로 전환됐습니다');
+}
+
+function exitAdmin() {
+  isAdmin = false;
+  document.body.classList.remove('admin-mode');
+  document.getElementById('adminToggleBtn').classList.remove('active');
+  document.getElementById('adminToggleBtn').textContent = '관리자';
+  document.getElementById('adminBanner').classList.remove('show');
+  showToast('관리자 모드를 종료했습니다');
+}
+
+// 편집 모달
+function openEditModal(id) {
+  editingId = id;
+  document.getElementById('editModalTitle').textContent = id ? '공고 수정' : '공고 추가';
+  if (id) {
+    const e = eduList.find(x => x.id === id);
+    document.getElementById('e-title').value = e.title;
+    document.getElementById('e-org').value = e.org;
+    document.getElementById('e-capacity').value = e.capacity || '';
+    document.getElementById('e-lodging').value = e.lodging || '';
+    document.getElementById('e-dates').value = e.dates.join('\n');
+    document.getElementById('e-deadline').value = e.deadline || '';
+    document.getElementById('e-status').value = e.status;
+    document.getElementById('e-link').value = e.link || APPLY_LINK;
+  } else {
+    document.getElementById('e-title').value = '';
+    document.getElementById('e-org').value = '';
+    document.getElementById('e-capacity').value = '';
+    document.getElementById('e-lodging').value = '숙식 제공';
+    document.getElementById('e-dates').value = '';
+    document.getElementById('e-deadline').value = '';
+    document.getElementById('e-status').value = 'open';
+    document.getElementById('e-link').value = APPLY_LINK;
+  }
+  document.getElementById('editModal').classList.add('open');
+}
+
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('open');
+}
+
+function saveEdu() {
+  const title = document.getElementById('e-title').value.trim();
+  const org = document.getElementById('e-org').value.trim();
+  const datesRaw = document.getElementById('e-dates').value.trim();
+  if (!title || !org || !datesRaw) { alert('교육명, 기관, 일정은 필수입니다.'); return; }
+  const data = {
+    title,
+    org,
+    capacity: document.getElementById('e-capacity').value.trim(),
+    lodging: document.getElementById('e-lodging').value,
+    dates: datesRaw.split('\n').map(d => d.trim()).filter(Boolean),
+    deadline: document.getElementById('e-deadline').value,
+    status: document.getElementById('e-status').value,
+    link: document.getElementById('e-link').value.trim() || APPLY_LINK,
+  };
+  if (editingId) {
+    const idx = eduList.findIndex(x => x.id === editingId);
+    eduList[idx] = { ...eduList[idx], ...data };
+    showToast('공고가 수정됐습니다');
+  } else {
+    data.id = Date.now();
+    eduList.unshift(data);
+    showToast('공고가 추가됐습니다');
+  }
+  save();
+  renderCards();
+  closeEditModal();
+}
+
+function deleteEdu(id) {
+  if (!confirm('이 공고를 삭제할까요?')) return;
+  eduList = eduList.filter(x => x.id !== id);
+  save();
+  renderCards();
+  showToast('공고가 삭제됐습니다');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// 모달 바깥 클릭 닫기
+document.getElementById('pwModal').addEventListener('click', function(e) { if (e.target === this) closePwModal(); });
+document.getElementById('editModal').addEventListener('click', function(e) { if (e.target === this) closeEditModal(); });
+
+renderCards();
+</script>
 </body>
 </html>
